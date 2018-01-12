@@ -8,11 +8,13 @@ function watchFile(filename) {
 
     try {
       fs.watch(filename, () => {
-        console.log(`Awaiting changes on ${filename}`);
+        console.log(`File ${filename} has changed`);
       });
     } catch(error) {
       throw new Error(`File ${filename} does not exist`);
     }
+
+    console.log(`Awaiting changes on ${filename}`);
   }
   catch(error) {
     console.error(`Error: ${error.message}`);
