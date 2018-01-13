@@ -1,25 +1,30 @@
 const fs = require('fs');
 
-function readFile(filename, failureCallback, successCallback) {
+function handleError(errorMessage, errorCallback) {
+  const error = new Error(errorMessage);
+  errorCallback(error.message);
+  return;
+}
+
+function readFile(filename, errorCallback, successCallback) {
+
   if (!filename) {
-    const newError = new Error('there was no file specified');
-    failureCallback(newError);
+    return handleError('no file was specified', errorCallback);
   }
 
-  fs.readFile(filename, (err, data) => {
-    if (err) {
-      const newError = new Error('there was an error reading the file');
-      failureCallback(newError);
-    } else {
-      successCallback(data.toString());
+  fs.readFile(filename, (error, data) => {
+    if (!data) {
+      return handleError('no data for file specified', errorCallback);
     }
+
+    successCallback(data.toString());
   });
 }
 
 const filename = process.argv[2];
 
-readFile(filename, (error) => {
-  console.log("error.message:", error.message);
-}, (data) => {
-  console.log("data:", data);
+readFile(filename, (errorMessage) => {
+  console.log("errorMessage:", errorMessage);
+}, (dataString) => {
+  console.log("dataString:", dataString);
 });
