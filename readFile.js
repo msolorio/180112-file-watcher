@@ -13,7 +13,7 @@ function readFile(filename, errorCallback, successCallback) {
   }
 
   fs.readFile(filename, (error, data) => {
-    if (!data) {
+    if (error) {
       return handleError('no data for file specified', errorCallback);
     }
 
