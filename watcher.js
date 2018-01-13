@@ -34,17 +34,18 @@ function watchFile(filename) {
     try {
       fs.watch(filename, () => {
         let lsChildProcess = spawn('ls', ['-lh', filename]);
-        let output = '';
 
         lsChildProcess.stdout.on('data', (data) => {
-          output += data.toString();
-        });
-
-        lsChildProcess.on('close', () => {
+          let output = data.toString();
           let outputArray = output.split(/\s+/);
-
           console.log([outputArray[0], outputArray[4], outputArray[8]]);
         });
+
+        // lsChildProcess.on('close', () => {
+          // let outputArray = output.split(/\s+/);
+          //
+          // console.log([outputArray[0], outputArray[4], outputArray[8]]);
+        // });
       });
     } catch(error) {
       throw new Error(error.message);
